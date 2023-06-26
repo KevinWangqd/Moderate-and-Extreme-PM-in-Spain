@@ -1,2 +1,2 @@
 # Moderate-and-Extreme-PM-in-Spain
-This repository contains Bayesian spatio-temporal extreme value model, predition with excursion functions and joint model with sharing effects
+This repository contains a Bayesian spatio-temporal extreme value model, prediction with excursion functions and a joint model with sharing effects.
