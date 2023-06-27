@@ -2,10 +2,16 @@
 library(INLA)
 library(raster)
 library(ggplot2)
-library(viridis)
 library(lattice)
 library(gridExtra)
 library(viridis)
+library(lwgeom)
+library(dplyr)
+library(leaflet)
+library(viridis)
+library(rgdal)
+library(sf)
+#install.packages("splancs")
 
 ## Functions (slcpo is the same as Logarithm score)
 RMSE <- function(set, outcome, data, fit) {
