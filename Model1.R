@@ -164,15 +164,6 @@ res_Gumbel1 <- inla(formula1,
                     verbose = TRUE
 )
 
-# Model 1             
-res_Gumbel1 <- inla(formula1,
-                    data = inla.stack.data(stk.full), 
-                    family = "gev",
-                    control.family = list(hyper = hyper.gev),
-                    control.predictor = list(A = inla.stack.A(stk.full), link = 1, compute = TRUE),
-                    control.compute = list(dic = TRUE, waic = TRUE, cpo = TRUE, config = TRUE),
-                    verbose = TRUE
-)
 
 
 ## Model outputs
