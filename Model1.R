@@ -123,7 +123,7 @@ stk.e <- inla.stack(
   effects = list(data.frame(b0 = rep(1, length(train_index)),
                             long = d$longs[train_index], lat = d$lats[train_index], alt = d$alts[train_index],
                             year = d$year[train_index], VP = d$VPs[train_index], meanTem = d$Ts[train_index], 
-                            meanPre = d$Ps[train_index], pop = d$pds[train_index]), s = indexs)
+                            meanPre = d$Ps[train_index], pop = d$pds[train_index], id = d$id[train_index]), s = indexs)
 )
 
 stk.p <- inla.stack(
@@ -133,16 +133,22 @@ stk.p <- inla.stack(
   effects = list(data.frame(b0 = rep(1, length(test_index)),
                             long = d$longs[test_index], lat = d$lats[test_index], alt = d$alts[test_index],
                             year = d$year[test_index], VP = d$VPs[test_index], meanTem = d$Ts[test_index], 
-                            meanPre = d$Ps[test_index], pop = d$pds[test_index]), s = indexs)
+                            meanPre = d$Ps[test_index], pop = d$pds[test_index], id = d$id[test_index]), s = indexs)
 )
 stk.full <- inla.stack(stk.e, stk.p)
 
 
 ## Prior 
 
-rprior <- list(theta = list(prior = "pccor1", param = c(0, 0.9)))  # ar1 prior
+rprior <- list(
+  theta = list(prior = "pccor1", param = c(0, 0.9)),
+  theta1  = list(prior = "pcprec", param = c(5, 0.01))
+)
 
-hyper.gev = list(tail = list(initial = 0, fixed = TRUE))  # fix Gumbel likelihood; \xi==0
+hyper.gev = list(
+  tail = list(initial = 0, fixed = TRUE),
+  prec  = list(prior = "pcprec", param = c(1, 0.01))
+)
 
 
 ## Formula: fixed effect of covariates + spatio-temporal random effect
@@ -151,10 +157,12 @@ formula1 <- y ~ 0 + b0 + long + lat + alt + VP + meanTem + meanPre + pop +
   f(s, model = spde, group = s.group, control.group = list(model = "ar1", hyper = rprior))
 
 ## The following formula is for Model 2/4
-## formula2 <- y ~ 0 + b0 + long + lat + alt + VP + meanTem + meanPre + pop + f(year, model = "ar1", hyper = rprior) + f(s, model = spde)
+ formula2 <- y ~ 0 + b0 + long + lat + alt + VP + meanTem + meanPre + pop + f(year, model = "ar1", hyper = rprior) + f(s, model = spde) + +f(id, year, model = "iid")
 
 
-# Model 1             
+
+# Model 1. For Model 2/3/4, the user may change the control.family options and switch to the formula2.
+
 res_Gumbel1 <- inla(formula1,
                     data = inla.stack.data(stk.full), 
                     family = "gev",
