@@ -105,11 +105,18 @@ stk.pre <- inla.stack(
 
 stk.full <- inla.stack(stk.e, stk.p, stk.pre)
 
-
 ## Prior 
-rprior <- list(theta = list(prior = "pccor1", param = c(0, 0.9))) ## ar1 prior
 
-hyper.gev = list(tail = list(initial = 0,fixed = TRUE)) ## Gumbel 
+rprior <- list(
+  theta = list(prior = "pccor1", param = c(0, 0.9)),
+  theta1  = list(prior = "pcprec", param = c(5, 0.01))
+)
+
+hyper.gev = list(
+  tail = list(initial = 0, fixed = TRUE),
+  prec  = list(prior = "pcprec", param = c(1, 0.01))
+)
+
 
 ## Formula
 formula1 <- y ~ 0 + b0 + long + lat + alt + VP + meanTem + meanPre + pop +
