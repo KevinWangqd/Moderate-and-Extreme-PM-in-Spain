@@ -466,22 +466,5 @@ pre_val <- plotting_data1[which(plotting_data1$group=="validation"),2]
 scatter.smooth(obs_val,pre_val)
 cor(obs_val,pre_val) 
 
-jpeg("max model.jpeg", quality = 100, units = "in", width = 6, height = 6, res = 300)
-
-# Print the plot or visualization
-p1
-# Close the jpeg device
-dev.off()
-
-jpeg("max model.jpeg", quality = 100, units = "px", width = 1856, height = 1631, res = 300)
-
-# 打印图形或可视化
-print(p1)
-
-# 关闭JPEG设备
-dev.off()
-
-
-## spline
 
 
