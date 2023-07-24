@@ -154,19 +154,17 @@ pre_ind <- 830
 #index1+index2+val_ind
 
 
+## Change the index with different stacks
+
+#This is for inclusion of prediction stack
 #idx.alt1 = c(rep(1,index1), rep(NA,index2+val_ind+pre_ind))
 #idx.temp1 = c(rep(1,index1), rep(NA,index2+val_ind+pre_ind))
 #idx.Pre1 = c(rep(1,index1), rep(NA,index2+val_ind+pre_ind))
 #idx.VP1 = c(rep(1,index1), rep(NA,index2+val_ind+pre_ind))
 #idx.pop1 = c(rep(1,index1), rep(NA,index2+val_ind+pre_ind))
 
-#idx.alt2 = c(rep(NA,index1), rep(1,index2), rep(NA,val_ind), rep(1,pre_ind))
-#idx.temp2 = c(rep(NA,index1), rep(1,index2), rep(NA,val_ind), rep(1,pre_ind))
-#idx.Pre2 = c(rep(NA,index1), rep(1,index2), rep(NA,val_ind), rep(1,pre_ind))
-#idx.VP2 = c(rep(NA,index1), rep(1,index2), rep(NA,val_ind), rep(1,pre_ind))
-#idx.pop2 = c(rep(NA,index1), rep(1,index2), rep(NA,val_ind), rep(1,pre_ind))
 
-
+#This is only for checking out the estimation results (inference)
 idx.alt1 = c(rep(1,index1), rep(NA,index2))
 idx.Pre1 = c(rep(1,index1), rep(NA,index2))
 idx.alt2 = c(rep(NA,index1), rep(1,index2))
@@ -176,16 +174,6 @@ idx.Pre2 = c(rep(NA,index1), rep(1,index2))
 
 
 ## formula
-formula <- y ~ 0 + Intercept1 + Intercept2 + 
-  long1 + lat1 + long2 + lat2 +
-  f(idx.alt1,alt1,model = "iid") + f(idx.alt2, alt2,copy = "idx.alt1", fixed = FALSE, hyper = hyper)+
-  f(idx.VP1,VP1,model = "iid") + f(idx.VP2, VP2,copy = "idx.VP1", fixed = FALSE, hyper = hyper)+
-  f(idx.pop1,pop1,model = "iid") + f(idx.pop2, pop2,copy = "idx.pop1", fixed = FALSE, hyper = hyper)+
-  f(idx.temp1,meanTem1,model = "iid") + f(idx.temp2, meanTem2,copy = "idx.temp1", fixed = FALSE, hyper = hyper)+
-  f(idx.Pre1,meanPre1,model = "iid") + f(idx.Pre2, meanPre2,copy = "idx.Pre1", fixed = FALSE, hyper = hyper)+
-  f(s1,model = spde, group = s1.group,control.group = list(model = "ar1", hyper = rprior)) + 
-  f(s2,copy = "s1", fixed = F, hyper = hyper) 
-
 
 formula <- y ~ 0 + Intercept1 + Intercept2 + long1 + lat1 + long2 + lat2 + 
   VP1 + VP2 + pop1 + pop2 + meanTem1 + meanTem2 + 
